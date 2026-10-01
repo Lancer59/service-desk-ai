@@ -1,0 +1,85 @@
+models:
+  - id: gpt-5.3-chat
+    deployment: gpt-5.3-chat
+    cost_rank: 1
+    perf_rank: 2
+    latency_rank: 1
+    max_tokens: 16000
+    supports_temperature: false
+    tags: [fast, cheap, eval_judge]
+
+  - id: gpt-4.1
+    deployment: gpt-4.1
+    cost_rank: 2
+    perf_rank: 1
+    latency_rank: 2
+    max_tokens: 128000
+    supports_temperature: false
+    tags: [reasoning, balanced]
+
+  - id: gpt-4o
+    deployment: gpt-4o
+    cost_rank: 3
+    perf_rank: 1
+    latency_rank: 2
+    max_tokens: 128000
+    supports_temperature: true
+    tags: [complex, reasoning]
+
+fallback_chain: [gpt-4.1, gpt-5.3-chat]
+
+model_router:
+  default_strategy: auto
+  # Queries estimated above this token count are routed to a higher-perf model
+  complexity_threshold: 150
+
+memory:
+  backend: memory  # memory | redis | postgres
+
+skills:
+  path: skills/
+  relevance_threshold: 0.1
+
+evaluation:
+  enabled: true
+  # Model tagged 'eval_judge' is used for LLM-as-judge scorers
+  judge_model: gpt-5.3-chat
+  scorers:
+    - answer_relevance
+    - faithfulness
+    - intent_recognition
+    - drift
+
+logging:
+  level: INFO
+
+# ── Nexthink script allow-list ────────────────────────────────────────────────
+# Maps issue keywords to approved Nexthink remote action names.
+# Only scripts on this list can be executed. Never allow arbitrary script names.
+nexthink:
+  script_map:
+    outlook_send_receive: set_outlook_online_windows
+    outlook_offline: set_outlook_online_windows
+    stuck_outbox: set_outlook_online_windows
+    teams_cache: clear_microsoft_teams_work_or_school_cache
+    teams_issue: clear_microsoft_teams_work_or_school_cache
+    dns_issue: clear_dns_cache
+    dns_error: clear_dns_cache
+    printer_issue: reset_print_spooler_windows
+    print_spooler: reset_print_spooler_windows
+    onedrive_issue: fix_onedrive_sync
+    device_performance: improve_device_performance
+    slow_computer: improve_device_performance
+    startup_issue: fix_startup_issues
+    browser_issue: fix_browser_issues
+  action_endpoint: /api/v1/remote-actions/execute
+
+# ── ServiceNow business config ────────────────────────────────────────────────
+servicenow:
+  # Assignment group used when creating incidents
+  default_assignment_group: Service Desk
+  # Close state value — confirm with your ServiceNow admin
+  # Common: 6=Resolved, 7=Closed
+  close_state: "6"
+  # Default domain for multi-domain instances (leave empty for single-domain)
+  default_domain: ""

@@ -1,0 +1,47 @@
+# Secrets — never commit
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# LangGraph / LangChain local artifacts
+.langchain.db
+langgraph.db
+
+# FAISS indexes (large binary files — store separately)
+docs/KB_Embedded/
+docs/CATALOG_embeddings/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/

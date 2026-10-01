@@ -1,0 +1,12 @@
+aiofiles
+fastapi
+uvicorn[standard]
+langchain>=1.0.0
+langgraph>=1.2.0
+langchain-openai
+pydantic>=2.0
+pyyaml
+python-dotenv
+structlog
+scikit-learn
+tiktoken
